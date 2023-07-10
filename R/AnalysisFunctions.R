@@ -120,9 +120,9 @@ getPosteriors <- function (
   jags_fit <- R2jags::jags(data               = j_data,
                            parameters.to.save = j_parameters,
                            model.file         = j_model_file,
-                           n.chains           = 2,
-                           n.iter             = n_mcmc_iterations,
-                           n.burnin           = floor(n_mcmc_iterations / 3),
+                           n.chains           = 1,
+                           n.iter             = n_mcmc_iterations + 1000,
+                           n.burnin           = 1000,
                            n.thin             = 1,
                            DIC                = FALSE,
                            progress.bar       = "none",
@@ -130,8 +130,7 @@ getPosteriors <- function (
                            quiet              = TRUE)
   
   ## Adaption and burn-in not included in sims.array
-  posterior_distributions <- rbind(jags_fit$BUGSoutput$sims.array[, 1, ],
-                                   jags_fit$BUGSoutput$sims.array[, 2, ])
+  posterior_distributions <- jags_fit$BUGSoutput$sims.array[, 1, ]
   
   ## replace squarebrackets provided by R2jags with workable characters
   colnames(posterior_distributions) <- gsub("\\[", "_", colnames(posterior_distributions))
@@ -210,6 +209,7 @@ getPostQuantiles <- function (
   
   "%dorng%" <- doRNG::"%dorng%"
   "%dopar%" <- foreach::"%dopar%"
+  "%do%" <- foreach::"%do%"
   posterior_quantiles_list <- foreach::foreach(
     k = chunks_outer,
     .combine  = c,
@@ -219,7 +219,7 @@ getPostQuantiles <- function (
       
       chunks_inner <- chunkVector(k, foreach::getDoParWorkers())
       
-      foreach::foreach(i = chunks_inner, .combine = c) %dorng% {
+      foreach::foreach(i = chunks_inner, .combine = c) %do% {
         
         lapply(i, function (j) {
           

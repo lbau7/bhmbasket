@@ -30,7 +30,7 @@ Imports: foreach, doRNG, R2jags (>= 0.7-1)
 Suggests: doFuture, future, knitr, rmarkdown
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 SystemRequirements: JAGS 4.x.y (http://mcmc-jags.sourceforge.net)
 NeedsCompilation: no
 Packaged: 2022-02-14 14:09:09 UTC; Stephan
