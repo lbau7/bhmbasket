@@ -10,7 +10,7 @@ The following modifications were made:
     for-loops random numbers are correlated, even when the `%dorng%` is
     used. Therefore, in the inner loop the operator was changed to
     `%do%`, such that only the outer loop runs in parallel.
-2.  In the `jags()` call in the `getPosterior()` function - which is
+2.  In the `jags()` call in the `getPosteriors()` function - which is
     called by `performAnalyses()` - the number of chains and number of
     burn-in iterations is hardcoded to 2 chains and
     `floor(n_mcmc_iterations / 3)` burn-in iterations. This was changed
