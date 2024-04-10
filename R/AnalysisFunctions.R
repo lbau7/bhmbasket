@@ -205,7 +205,7 @@ getPostQuantiles <- function (
     "qbetaDiff")
   
   ## prepare chunking
-  chunks_outer <- chunkVector(seq_len(n_analyses), 10)
+  chunks_outer <- chunkVector(seq_len(n_analyses), foreach::getDoParWorkers())
   
   "%dorng%" <- doRNG::"%dorng%"
   "%dopar%" <- foreach::"%dopar%"
@@ -217,7 +217,7 @@ getPostQuantiles <- function (
     .packages = c("R2jags"),
     .export   = exported_stuff) %dorng% {
       
-      chunks_inner <- chunkVector(k, 10)
+      chunks_inner <- chunkVector(k, foreach::getDoParWorkers())
       
       foreach::foreach(i = chunks_inner, .combine = c) %do% {
         
